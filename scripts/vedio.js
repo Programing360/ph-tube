@@ -2,8 +2,8 @@
 const lodeCategories = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/categories')
         .then((res) => res.json())
-        .then(data => displayCategorise(data.categories
-        ))
+        .then((data) => displayCategorise(data.categories) 
+        )
         .catch(error => console.log(error))
 }
 // category else----------------------------------
@@ -11,16 +11,31 @@ const buttonCategoryVideo = (id) => {
     // alert(id)
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
         .then((res) => res.json())
-        .then(data => displayLoad(data.category
-        ))
-        activeBtn(id)
+        .then((data) => {
+            // btnColor reomove koro
+            activeBtn2()
+            // btnColor add koro
+            displayLoad(data.category)
+            const btnColor = document.getElementById(`btn-${id}`)
+            // console.log(btnColor)
+            btnColor.classList.add("active")
+        })
+        
         .catch(error => console.log(error))
 }
-const activeBtn = (id) => {
-    const button = document.getElementById(id)
-    button.classList.add("bg-red-400")
+// const activeBtn = (id) => {
+//     const button = document.getElementById(id)
+    
+//     button.classList.add("bg-red-400")
+    
+// }
+const activeBtn2 = () => {
+    const button = document.getElementsByClassName('category-btn')
+    // console.log(button)
+    for(let btn of button){
+        btn.classList.remove("active")
+    }
 }
-
 // displayCategorise----------------------------
 const displayCategorise = (categories) => {
     const btnCategorise = document.getElementById('categorise')
@@ -30,7 +45,7 @@ const displayCategorise = (categories) => {
         // btn-Create------------------------------
         const buttonDiv = document.createElement("div")
         buttonDiv.innerHTML =`
-        <button id = "${item.category_id}" onclick ="buttonCategoryVideo(${item.category_id})" class = "btn">
+        <button id = "btn-${item.category_id}" onclick ="buttonCategoryVideo(${item.category_id})" class = "btn category-btn">
         ${item.category}
         </button>
         `
