@@ -2,7 +2,7 @@
 const lodeCategories = () => {
     fetch('https://openapi.programming-hero.com/api/phero-tube/categories')
         .then((res) => res.json())
-        .then((data) => displayCategorise(data.categories) 
+        .then((data) => displayCategorise(data.categories)
         )
         .catch(error => console.log(error))
 }
@@ -20,19 +20,19 @@ const buttonCategoryVideo = (id) => {
             // console.log(btnColor)
             btnColor.classList.add("active")
         })
-        
+
         .catch(error => console.log(error))
 }
 // const activeBtn = (id) => {
 //     const button = document.getElementById(id)
-    
+
 //     button.classList.add("bg-red-400")
-    
+
 // }
 const activeBtn2 = () => {
     const button = document.getElementsByClassName('category-btn')
     // console.log(button)
-    for(let btn of button){
+    for (let btn of button) {
         btn.classList.remove("active")
     }
 }
@@ -44,12 +44,12 @@ const displayCategorise = (categories) => {
 
         // btn-Create------------------------------
         const buttonDiv = document.createElement("div")
-        buttonDiv.innerHTML =`
+        buttonDiv.innerHTML = `
         <button id = "btn-${item.category_id}" onclick ="buttonCategoryVideo(${item.category_id})" class = "btn category-btn">
         ${item.category}
         </button>
         `
-        
+
         // button.classList = "btn"
         // button.id = "btnId-$"
         // button.innerText = item.category;
@@ -60,18 +60,18 @@ const displayCategorise = (categories) => {
 
 }
 
-const vedioLoad = () => {
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
+const vedioLoad = (textSearch = "") => {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${textSearch}`)
         .then((res) => res.json())
         .then(data => displayLoad(data.videos
         ))
-        
+
         .catch(error => console.log(error))
 }
 // timeFuntion Create------------------------------------
-function setTime(time){
+function setTime(time) {
     const day = parseInt(time / 86400);
-    const hour = parseInt(time / 3600) ;
+    const hour = parseInt(time / 3600);
     let remainingSecond = time % 3600
     const minute = parseInt(time / 60);
     remainingSecond = remainingSecond % 60
@@ -85,9 +85,9 @@ const displayLoad = (videos) => {
     const div = document.getElementById('vedioLoad')
     div.innerHTML = ""
 
-    if(videos.length === 0){
+    if (videos.length === 0) {
         div.classList.remove('grid')
-        div.innerHTML =`
+        div.innerHTML = `
         <div class = "flex flex-col justify-center items-center m-h-[500px]">
         <img src = "assets/Icon.png" />
         <h2>
@@ -97,7 +97,7 @@ const displayLoad = (videos) => {
         `
         return;
     }
-    else{
+    else {
         div.classList.add('grid')
     }
     videos.forEach((item) => {
@@ -113,9 +113,8 @@ const displayLoad = (videos) => {
                     class = "h-full w-full object-cover"  
                     lt="Shoes"/>
 
-                    ${
-                        item.others.posted_date?.length == 0 ? "" : `<span class = "absolute right-2 text-xs bottom-25 bg-black text-white rounded p-1" >${setTime(item.others.posted_date)} </span>`
-                    }
+                    ${item.others.posted_date?.length == 0 ? "" : `<span class = "absolute right-2 text-xs bottom-25 bg-black text-white rounded p-1" >${setTime(item.others.posted_date)} </span>`
+            }
                     
                 </figure>
                 <div class="px-0 py-2 flex gap-4">
@@ -128,7 +127,7 @@ const displayLoad = (videos) => {
                         <div class = "flex items-center object-cover gap-2">
                             <p>${item.authors[0].profile_name}</p>
                             ${item.authors[0].verified === true ? `<img class = "w-5 h-5" src = "https://img.icons8.com/fluency/48/instagram-check-mark.png"/>` : ''}
-                            
+                            <button class = "btn ml-20 bg-green-400">Ditails</button>
                         </div>
                         <p class = font-bold>${item.others.views} views</p>
                     </div>
@@ -140,6 +139,11 @@ const displayLoad = (videos) => {
         div.append(card)
     })
 }
+
+document.getElementById('search-text').addEventListener("keyup", (e) => {
+    vedioLoad(e.target.value)
+})
+
 // {
 //     "category_id": "1001",
 //     "video_id": "aaab",
